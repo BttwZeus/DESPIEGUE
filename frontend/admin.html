@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Admin - CKZ Suplements</title>
+    <style>
+        :root {
+            --black: #121212;
+            --white: #ffffff;
+            --light-gray: #f5f5f5;
+            --medium-gray: #e0e0e0;
+            --dark-gray: #2d2d2d;
+            --accent: #FFC107;
+            --error: #D32F2F;
+            --success: #388E3C;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light-gray);
+            color: var(--black);
+            line-height: 1.6;
+        }
+        
+        /* Header */
+        .admin-header {
+            background-color: var(--black);
+            color: var(--white);
+            padding: 1.2rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            margin-bottom: 2rem;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+        }
+        
+        .logo span {
+            color: var(--accent);
+        }
+        
+        .admin-nav a {
+            color: var(--white);
+            text-decoration: none;
+            margin-left: 1.5rem;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+        
+        .admin-nav a:hover {
+            background-color: var(--dark-gray);
+        }
+
+        /* Contenedor principal */
+        .admin-container {
+            display: flex;
+            min-height: calc(100vh - 70px);
+            padding: 0 2rem;
+        }
+
+        /* Sidebar */
+        .admin-sidebar {
+            width: 250px;
+            background-color: var(--black);
+            color: var(--white);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-right: 2rem;
+            height: fit-content;
+        }
+
+        .admin-sidebar h3 {
+            margin-bottom: 1.5rem;
+            color: var(--accent);
+            font-size: 1.2rem;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .sidebar-menu li {
+            margin-bottom: 0.5rem;
+        }
+
+        .sidebar-menu a {
+            color: var(--white);
+            text-decoration: none;
+            display: block;
+            padding: 0.5rem;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        .sidebar-menu a:hover, .sidebar-menu a.active {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Main Content */
+        .admin-main {
+            flex: 1;
+            padding-bottom: 2rem;
+        }
+
+        /* Cards de estadísticas */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background-color: var(--white);
+            border-radius: 14px;
+            padding: 1.5rem;
+            box-shadow: 8px 8px 16px #d9d9d9, -8px -8px 16px #ffffff;
+            text-align: center;
+        }
+
+        .stat-card h3 {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            color: var(--black);
+        }
+
+        .stat-card p {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--black);
+        }
+
+        /* Formulario de productos */
+        .product-form {
+            background-color: var(--white);
+            border-radius: 14px;
+            padding: 2rem;
+            box-shadow: 8px 8px 16px #d9d9d9, -8px -8px 16px #ffffff;
+            margin-bottom: 2rem;
+        }
+
+        .form-title {
+            margin-bottom: 1.5rem;
+            color: var(--black);
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .input-group {
+            margin-bottom: 1rem;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--black);
+        }
+
+        .input-group input, 
+        .input-group textarea, 
+        .input-group select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid var(--medium-gray);
+            border-radius: 8px;
+            background-color: var(--light-gray);
+            transition: all 0.3s;
+        }
+
+        .input-group input:focus, 
+        .input-group textarea:focus, 
+        .input-group select:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px rgba(255, 193, 7, 0.2);
+        }
+
+        .input-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .form-actions {
+            grid-column: span 2;
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background-color: var(--black);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--dark-gray);
+        }
+
+        .btn-secondary {
+            background-color: var(--medium-gray);
+            color: var(--black);
+        }
+
+        .btn-secondary:hover {
+            background-color: #d0d0d0;
+        }
+
+        /* Tabla de productos */
+        .products-table-container {
+            background-color: var(--white);
+            border-radius: 14px;
+            padding: 2rem;
+            box-shadow: 8px 8px 16px #d9d9d9, -8px -8px 16px #ffffff;
+        }
+
+        .table-controls {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+        
+        .search-box {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        #searchInput {
+            padding: 0.5rem;
+            border: 1px solid var(--medium-gray);
+            border-radius: 8px;
+            min-width: 250px;
+        }
+        
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        .products-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .products-table th, 
+        .products-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--medium-gray);
+        }
+
+        .products-table th {
+            background-color: var(--black);
+            color: var(--white);
+            font-weight: 600;
+        }
+
+        .products-table tr:hover {
+            background-color: rgba(0, 0, 0, 0.02);
+        }
+
+        .table-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-sm {
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+        }
+
+        .btn-edit {
+            background-color: var(--black);
+            color: var(--white);
+        }
+
+        .btn-edit:hover {
+            background-color: var(--dark-gray);
+        }
+
+        .btn-delete {
+            background-color: var(--error);
+            color: var(--white);
+        }
+
+        .btn-delete:hover {
+            background-color: #c62828;
+        }
+
+        .loading-message, .empty-message {
+            text-align: center;
+            padding: 1rem;
+            color: var(--dark-gray);
+        }
+        
+        .table-message {
+            margin-top: 1rem;
+            padding: 0.5rem;
+            border-radius: 4px;
+            text-align: center;
+        }
+        
+        .error-message {
+            background-color: #FFEBEE;
+            color: var(--error);
+        }
+        
+        .success-message {
+            background-color: #E8F5E9;
+            color: var(--success);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .admin-container {
+                flex-direction: column;
+                padding: 0 1rem;
+            }
+            
+            .admin-sidebar {
+                width: 100%;
+                margin-right: 0;
+                margin-bottom: 2rem;
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-actions {
+                grid-column: span 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="admin-header">
+        <div class="logo"><span>CKZ</span> ADMIN</div>
+        <nav class="admin-nav">
+            <a href="../index.html" target="_blank"><i class="fas fa-eye"></i> Ver Tienda</a>
+            <a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
+        </nav>
+    </header>
+
+    <div class="admin-container">
+        <aside class="admin-sidebar">
+            <h3><i class="fas fa-cog"></i> Panel</h3>
+            <ul class="sidebar-menu">
+                <li><a href="#" class="active"><i class="fas fa-boxes"></i> Productos</a></li>
+                <li><a href="#"><i class="fas fa-receipt"></i> Pedidos</a></li>
+                <li><a href="#"><i class="fas fa-users"></i> Clientes</a></li>
+            </ul>
+        </aside>
+
+        <main class="admin-main">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>Productos</h3>
+                    <p id="totalProducts">0</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Ventas Hoy</h3>
+                    <p id="todaySales">$0</p>
+                </div>
+            </div>
+
+            <div class="product-form">
+                <h2 class="form-title"><span id="formTitle">Añadir Producto</span></h2>
+                <form id="productForm">
+                    <input type="hidden" id="productId">
+                    <div class="form-grid">
+                        <div class="input-group">
+                            <label for="nombre">Nombre*</label>
+                            <input type="text" id="nombre" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="precio">Precio ($)*</label>
+                            <input type="number" id="precio" step="0.01" min="0" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="descripcion">Descripción</label>
+                            <textarea id="descripcion"></textarea>
+                        </div>
+                        <div class="input-group">
+                            <label for="stock">Stock*</label>
+                            <input type="number" id="stock" min="0" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="categoria">Categoría</label>
+                            <select id="categoria">
+                                <option value="proteina">Proteínas</option>
+                                <option value="creatina">Creatinas</option>
+                                <option value="vitaminas">Vitaminas</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label for="imagen">URL Imagen</label>
+                            <input type="text" id="imagen" placeholder="https://ejemplo.com/imagen.jpg">
+                        </div>
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-secondary" id="btnCancel">Cancelar</button>
+                            <button type="submit" class="btn btn-primary">Guardar Producto</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="products-table-container">
+                <h2 class="form-title">Lista de Productos</h2>
+                <div class="table-controls">
+                    <div class="search-box">
+                        <input type="text" id="searchInput" placeholder="Buscar productos...">
+                        <button id="refreshBtn" class="btn btn-sm">
+                            <i class="fas fa-sync-alt"></i> Actualizar
+                        </button>
+                    </div>
+                </div>
+                <div class="table-wrapper">
+                    <table class="products-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nombre</th>
+                                <th>Precio</th>
+                                <th>Stock</th>
+                                <th>Categoría</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="productsTableBody">
+                            <tr>
+                                <td colspan="6" class="loading-message">
+                                    <i class="fas fa-spinner fa-spin"></i> Cargando productos...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div id="tableMessage" class="table-message"></div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Font Awesome para íconos -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+
+    <script>
+        // Variables globales
+        let editingProductId = null;
+        let products = [];
+
+        // Inicialización
+        document.addEventListener('DOMContentLoaded', async () => {
+            await checkAuth();
+            await loadStats();
+            await loadProducts();
+            setupEventListeners();
+        });
+
+        // Verificar autenticación
+        async function checkAuth() {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                redirectToLogin();
+                return;
+            }
+
+            try {
+                const response = await fetch('http://localhost:5000/api/user', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                
+                if (!response.ok) {
+                    redirectToLogin();
+                    return;
+                }
+
+                const user = await response.json();
+                if (user.rol !== 'admin') {
+                    window.location.href = '../index.html';
+                }
+            } catch (error) {
+                console.error('Error verificando autenticación:', error);
+                redirectToLogin();
+            }
+        }
+
+        // Cargar estadísticas
+        async function loadStats() {
+            try {
+                const response = await fetch('http://localhost:5000/api/admin/productos', {
+                    headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+                });
+                const data = await response.json();
+                document.getElementById('totalProducts').textContent = data.length;
+            } catch (error) {
+                console.error('Error cargando estadísticas:', error);
+            }
+        }
+
+        // Cargar productos
+        async function loadProducts() {
+            const tbody = document.getElementById('productsTableBody');
+            const messageDiv = document.getElementById('tableMessage');
+            
+            try {
+                // Mostrar estado de carga
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" class="loading-message">
+                            <i class="fas fa-spinner fa-spin"></i> Cargando productos...
+                        </td>
+                    </tr>
+                `;
+                
+                // Limpiar mensajes anteriores
+                messageDiv.textContent = '';
+                messageDiv.className = 'table-message';
+                
+                const token = localStorage.getItem('token');
+                if (!token) {
+                    throw new Error('No hay sesión activa');
+                }
+                
+                const response = await fetch('http://localhost:5000/api/admin/productos', {
+                    headers: { 
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || 'Error al cargar productos');
+                }
+                
+                products = await response.json();
+                
+                if (products.length === 0) {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="6" class="empty-message">
+                                No hay productos registrados
+                            </td>
+                        </tr>
+                    `;
+                    return;
+                }
+                
+                renderProductsTable();
+                
+            } catch (error) {
+                console.error('Error cargando productos:', error);
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" class="error-message">
+                            <i class="fas fa-exclamation-circle"></i> ${error.message}
+                        </td>
+                    </tr>
+                `;
+                
+                // Mostrar mensaje de error
+                messageDiv.textContent = `Error: ${error.message}`;
+                messageDiv.classList.add('error-message');
+            }
+        }
+
+        // Renderizar tabla
+        function renderProductsTable() {
+            const tbody = document.getElementById('productsTableBody');
+            tbody.innerHTML = '';
+            
+            products.forEach(product => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${product.id}</td>
+                    <td>${product.nombre}</td>
+                    <td>$${Number(product.precio).toFixed(2)}</td>
+                    <td>${product.stock}</td>
+                    <td>${product.categoria || 'N/A'}</td>
+                    <td class="table-actions">
+                        <button class="btn btn-sm btn-edit" onclick="editProduct(${product.id})">
+                            <i class="fas fa-edit"></i> Editar
+                        </button>
+                        <button class="btn btn-sm btn-delete" onclick="deleteProduct(${product.id})">
+                            <i class="fas fa-trash"></i> Eliminar
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // Editar producto
+        function editProduct(id) {
+            const product = products.find(p => p.id === id);
+            if (!product) return;
+
+            editingProductId = id;
+            document.getElementById('formTitle').textContent = 'Editar Producto';
+            document.getElementById('productId').value = product.id;
+            document.getElementById('nombre').value = product.nombre;
+            document.getElementById('descripcion').value = product.descripcion || '';
+            document.getElementById('precio').value = product.precio;
+            document.getElementById('stock').value = product.stock;
+            document.getElementById('categoria').value = product.categoria || 'proteina';
+            document.getElementById('imagen').value = product.imagen || '';
+        }
+
+        // Eliminar producto
+        async function deleteProduct(id) {
+            if (!confirm('¿Estás seguro de eliminar este producto?')) return;
+
+            try {
+                const response = await fetch(`http://localhost:5000/api/admin/productos/${id}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+                });
+
+                if (response.ok) {
+                    await loadProducts();
+                    await loadStats();
+                    showMessage('Producto eliminado correctamente', 'success');
+                } else {
+                    throw new Error('Error al eliminar');
+                }
+            } catch (error) {
+                console.error('Error eliminando producto:', error);
+                showMessage('Error al eliminar producto: ' + error.message, 'error');
+            }
+        }
+
+        // Configurar eventos
+        function setupEventListeners() {
+            document.getElementById('productForm').addEventListener('submit', handleFormSubmit);
+            document.getElementById('btnCancel').addEventListener('click', resetForm);
+            document.getElementById('logout-btn').addEventListener('click', logout);
+            document.getElementById('refreshBtn').addEventListener('click', loadProducts);
+            
+            // Buscador de productos
+            document.getElementById('searchInput').addEventListener('input', (e) => {
+                const searchTerm = e.target.value.toLowerCase();
+                const rows = document.querySelectorAll('#productsTableBody tr');
+                
+                rows.forEach(row => {
+                    const name = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+                    row.style.display = name.includes(searchTerm) ? '' : 'none';
+                });
+            });
+        }
+
+        // Manejar envío de formulario
+        async function handleFormSubmit(e) {
+            e.preventDefault();
+
+            const productData = {
+                nombre: document.getElementById('nombre').value,
+                descripcion: document.getElementById('descripcion').value,
+                precio: parseFloat(document.getElementById('precio').value),
+                stock: parseInt(document.getElementById('stock').value),
+                categoria: document.getElementById('categoria').value,
+                imagen: document.getElementById('imagen').value || null
+            };
+
+            try {
+                const url = editingProductId 
+                    ? `http://localhost:5000/api/admin/productos/${editingProductId}`
+                    : 'http://localhost:5000/api/admin/productos';
+
+                const method = editingProductId ? 'PUT' : 'POST';
+
+                const response = await fetch(url, {
+                    method,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    },
+                    body: JSON.stringify(productData)
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || 'Error desconocido');
+                }
+
+                const result = await response.json();
+                showMessage(`Producto ${editingProductId ? 'actualizado' : 'creado'} con éxito`, 'success');
+
+                resetForm();
+                await loadProducts();
+                await loadStats();
+            } catch (error) {
+                console.error('Error:', error);
+                showMessage(`Error: ${error.message}`, 'error');
+            }
+        }
+
+        // Resetear formulario
+        function resetForm() {
+            editingProductId = null;
+            document.getElementById('formTitle').textContent = 'Añadir Producto';
+            document.getElementById('productForm').reset();
+        }
+
+        // Mostrar mensajes
+        function showMessage(text, type = 'info') {
+            const messageDiv = document.getElementById('tableMessage');
+            messageDiv.textContent = text;
+            messageDiv.className = `table-message ${type}-message`;
+            
+            // Ocultar mensaje después de 5 segundos
+            setTimeout(() => {
+                if (messageDiv.textContent === text) {
+                    messageDiv.textContent = '';
+                    messageDiv.className = 'table-message';
+                }
+            }, 5000);
+        }
+
+        // Cerrar sesión
+        function logout() {
+            localStorage.removeItem('token');
+            redirectToLogin();
+        }
+
+        // Redirección
+        function redirectToLogin() {
+            window.location.href = '../login.html';
+        }
+
+        // Funciones globales
+        window.editProduct = editProduct;
+        window.deleteProduct = deleteProduct;
+    </script>
+</body>
+</html>

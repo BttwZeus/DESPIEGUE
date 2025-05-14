@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión - CKZ Suplements</title>
+    <style>
+        body {
+            background-color: #212121;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Estilos del formulario */
+        .form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding: 2em;
+            background-color: #171717;
+            border-radius: 25px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            transition: .4s ease-in-out;
+        }
+
+        .form:hover {
+            transform: scale(1.02);
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.4);
+        }
+
+        #heading {
+            text-align: center;
+            margin: 1em 0 2em;
+            color: rgb(255, 255, 255);
+            font-size: 1.5em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .logo-text {
+            color: #FFC107;
+            font-weight: 700;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .field {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5em;
+            border-radius: 25px;
+            padding: 0.8em;
+            border: none;
+            outline: none;
+            color: white;
+            background-color: #171717;
+            box-shadow: inset 2px 5px 10px rgb(5, 5, 5);
+            margin-bottom: 10px;
+        }
+
+        .input-icon {
+            height: 1.3em;
+            width: 1.3em;
+            fill: white;
+        }
+
+        .input-field {
+            background: none;
+            border: none;
+            outline: none;
+            width: 100%;
+            color: #d3d3d3;
+            font-size: 1em;
+            padding: 0.5em;
+        }
+
+        .form .btn {
+            display: flex;
+            justify-content: center;
+            flex-direction: row;
+            margin-top: 2em;
+            gap: 10px;
+        }
+
+        /* Estilo base común para ambos botones */
+        .btn button, .btn a {
+            padding: 0.8em 1.5em;
+            border-radius: 5px;
+            border: none;
+            outline: none;
+            transition: .4s ease-in-out;
+            font-weight: 600;
+            cursor: pointer;
+            flex: 1; /* Esto hace que ambos botones ocupen el mismo espacio */
+            text-align: center;
+            text-decoration: none;
+            font-size: 1em;
+            font-family: inherit;
+            display: inline-block; /* Para que el ancho funcione correctamente */
+            box-sizing: border-box; /* Para incluir padding en el ancho */
+        }
+
+        /* Estilo específico para el botón de Ingresar */
+        .button1 {
+            background-color: #2E7D32;
+            color: white;
+        }
+
+        .button1:hover {
+            background-color: #1B5E20;
+            transform: translateY(-2px);
+        }
+
+        /* Estilo específico para el botón de Registrarse */
+        .button2 {
+            background-color: #252525;
+            color: white;
+        }
+
+        .button2:hover {
+            background-color: #121212;
+            transform: translateY(-2px);
+        }
+
+        .error-message {
+            color: #D32F2F;
+            font-size: 0.9rem;
+            margin-top: 5px;
+            display: none;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <form class="form" id="loginForm">
+        <p id="heading">
+            <span class="logo-text">CKZ</span> Login
+        </p>
+        <div class="field">
+            <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M13.106 7.222c0-2.967-2.249-5.032-5.482-5.032-3.35 0-5.646 2.318-5.646 5.702 0 3.493 2.235 5.708 5.762 5.708.862 0 1.689-.123 2.304-.335v-.862c-.43.199-1.354.328-2.29.328-2.926 0-4.813-1.88-4.813-4.798 0-2.844 1.921-4.881 4.594-4.881 2.735 0 4.608 1.688 4.608 4.156 0 1.682-.554 2.769-1.416 2.769-.492 0-.772-.28-.772-.76V5.206H8.923v.834h-.11c-.266-.595-.881-.964-1.6-.964-1.4 0-2.378 1.162-2.378 2.823 0 1.737.957 2.906 2.379 2.906.8 0 1.415-.39 1.709-1.087h.11c.081.67.703 1.148 1.503 1.148 1.572 0 2.57-1.415 2.57-3.643zm-7.177.704c0-1.197.54-1.907 1.456-1.907.93 0 1.524.738 1.524 1.907S8.308 9.84 7.371 9.84c-.895 0-1.442-.725-1.442-1.914z"></path>
+            </svg>
+            <input autocomplete="off" placeholder="Correo Electrónico" class="input-field" type="email" id="email" required>
+        </div>
+        <div class="error-message" id="email-error"></div>
+        
+        <div class="field">
+            <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"></path>
+            </svg>
+            <input placeholder="Contraseña" class="input-field" type="password" id="password" required>
+        </div>
+        <div class="error-message" id="password-error"></div>
+        
+        <div class="btn">
+            <button class="button1" type="submit">
+                <i class="fas fa-sign-in-alt"></i> Ingresar
+            </button>
+            <a href="register.html" class="button2">
+                <i class="fas fa-user-plus"></i> Registrarse
+            </a>
+        </div>
+    </form>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            // Reset errores
+            document.querySelectorAll('.error-message').forEach(el => {
+                el.style.display = 'none';
+            });
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            try {
+                const response = await fetch('http://localhost:5000/api/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    localStorage.setItem('token', data.token);
+                    
+                    // Redirección por rol
+                    if (data.rol === 'admin') {
+                        window.location.href = 'admin.html';
+                    } else {
+                        window.location.href = 'index.html';
+                    }
+                } else {
+                    // Mostrar errores
+                    if (data.error.includes('Credenciales')) {
+                        document.getElementById('password-error').textContent = data.error;
+                        document.getElementById('password-error').style.display = 'block';
+                    } else {
+                        document.getElementById('email-error').textContent = data.error;
+                        document.getElementById('email-error').style.display = 'block';
+                    }
+                }
+            } catch (error) {
+                document.getElementById('email-error').textContent = 'Error de conexión';
+                document.getElementById('email-error').style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>
